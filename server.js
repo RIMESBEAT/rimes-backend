@@ -14,13 +14,32 @@ const uri = process.env.MONGODB_URI;
 mongoose.connect(uri)
 
 app.get("/api/videos", (req, res) => {
+  const page = req.query.p || 0;
+
+  const booksPerPage = 100;
+
   PornModel.find({}, (err, result) => {
     if (err) {
       res.json(err);
     } else {
       res.json(result);
     }
-  });
+  })
+    .skip(page * booksPerPage)
+    .limit(booksPerPage);
+});
+app.get("/api/videos/:id", (req, res) => {
+  if (ObjectId.isValid(req.params.id)) {
+    PornModel.findOne({ _id: ObjectId(req.params.id) })
+      .then((doc) => {
+        res.status(200).json(doc);
+      })
+      .catch((err) => {
+        res.status(500).json({ Error: "Could not fetch data" });
+      });
+  } else {
+    res.status(500).json({ Error: "Not a valid doc ID" });
+  }
 });
 
 app.post("/api/videos", async (req, res) => {
