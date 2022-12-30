@@ -14,7 +14,7 @@ const uri = process.env.MONGODB_URI;
 mongoose.connect(uri)
 
 app.get("/api/videos", (req, res) => {
-  PostModel.find({}, (err, result) => {
+  PornModel.find({}, (err, result) => {
     if (err) {
       res.json(err);
     } else {
@@ -23,10 +23,9 @@ app.get("/api/videos", (req, res) => {
   });
 });
 
-
 app.post("/api/videos", async (req, res) => {
   const posting = req.body;
-  const newPosting = new PostModel(posting);
+  const newPosting = new PornModel(posting);
   await newPosting.save();
   res.json(posting);
 });
