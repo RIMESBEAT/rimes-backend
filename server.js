@@ -16,7 +16,7 @@ mongoose.connect(uri)
 app.get("/api/videos", (req, res) => {
   const page = req.query.p || 0;
 
-  const booksPerPage = 100;
+  const booksPerPage = 10000;
 
   PornModel.find({}, (err, result) => {
     if (err) {
